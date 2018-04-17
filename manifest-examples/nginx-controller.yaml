@@ -1,0 +1,17 @@
+apiVersion: labeler.barpilot.io/v1alpha1
+kind: Labeler
+metadata:
+  name: exemple
+  labels:
+    operator: node-labeler-operator
+spec:
+  nodeSelectorTerms:
+  - matchExpressions:
+    - key: kubernetes.io/hostname
+      operator: In
+      values:
+      - minikube
+  merge:
+    labels:
+      it: works
+  #DryRun: true
