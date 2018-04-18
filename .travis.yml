@@ -1,0 +1,24 @@
+language: go
+
+go:
+  - "1.10"
+  - "1.x"
+  - master
+
+install: true
+script: go test -v $(go list ./... | grep -v vendor)
+
+before_deploy:
+- go get github.com/mitchellh/gox
+- gox -os=linux -output="bin/{{.Dir}}_{{.OS}}_{{.Arch}}"
+
+deploy:
+  provider: releases
+  api_key:
+    secure: 5r1Qcw0Qtk6iGQYVKoaIHZUMmxC8o7THqou1wIG0WQqeEdIIOdhjtjSrodu/me3omBsvyU1V6wErJjvKfaYMIIoJT2OybxxC1ok76NjpRu0HASFrRc7i0A/kRxOooQcQS7i6eafVTPWlWLepVDRUawsMmKENGZ0GF5lrgRnc82wN/fy5TCLH4unlCu2C7iso/CWbqv5WkLRRirrc/9QPwAdy8ZNeYGD0vT1nsA5RHBqzUZzzpva5MQMakNFg5abIWSEB4KdQ7j+4CzS6bXe6lRkevevAw0pHQNwJ+fFyLHa3xXagtfjCfqWkBDDPSJMwmodl9sbonCt3QVj8bI7J3Ww2PfZSjycW+rHBWLH/0GLWF58SISshf4hUoLjje1mrS34t8Vnl4D7AYdR5JgnGf2t3FGbDkeswf97hedAxEBx5Q4gAlXbFBjmWKvKLD6uRkPKKWWYgj/3a4+gk9Mne7/Ew+nfoSHFdpAy7xZS6YOsaNqWE1YhxVDHy8n9bmnCnjtIP3Ta7gjq45Zxx483nfCbCbX6OLv4FsIsqYIWNfzoHgnVrfhBAEsvN7G16/67bClROCSyogFEOJ5Hwm54GkJC+DLAP3H4i/kAm6mPXnAMp219YV2gnQX6iuxrhmZreY8nrdn/JYr+H4ZLi2jzWsRokT7skWqRRq1QSeQozkqQ=
+  skip_cleanup: true
+  file: bin/*
+  file_glob: true
+  on:
+    tags: true
+    go: "1.10"

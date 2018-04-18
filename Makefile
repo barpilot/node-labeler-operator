@@ -1,5 +1,5 @@
 
-CODE_GENERATOR_IMAGE := quay.io/slok/kube-code-generator:v1.10.0
+CODE_GENERATOR_IMAGE := quay.io/slok/kube-code-generator:v1.9.1
 DIRECTORY := $(PWD)
 CODE_GENERATOR_PACKAGE := github.com/barpilot/node-labeler-operator
 
