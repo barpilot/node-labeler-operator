@@ -1,9 +1,8 @@
 language: go
 
 go:
+  - "1.10"
   - "1.x"
-  - "1.8"
-  - "1.10.x"
   - master
 
 install: true
@@ -22,3 +21,4 @@ deploy:
   file_glob: true
   on:
     tags: true
+    go: "1.10"
