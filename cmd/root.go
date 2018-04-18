@@ -18,7 +18,6 @@ import (
 	"fmt"
 	"os"
 	"os/signal"
-	"path/filepath"
 	"syscall"
 	"time"
 
@@ -68,9 +67,7 @@ func init() {
 	// when this action is called directly.
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 
-	// Get the user kubernetes configuration in it's home directory.
-	kubehome := filepath.Join(homedir.HomeDir(), ".kube", "config")
-	rootCmd.PersistentFlags().String("kubeconfig", kubehome, "Path to a kubeconfig. Only required if out-of-cluster.")
+	rootCmd.PersistentFlags().String("kubeconfig", "", "Path to a kubeconfig. Only required if out-of-cluster.")
 	viper.BindPFlag("kubeconfig", rootCmd.PersistentFlags().Lookup("kubeconfig"))
 	rootCmd.PersistentFlags().String("master", "", "The address of the Kubernetes API server. Overrides any value in kubeconfig. Only required if out-of-cluster.")
 	viper.BindPFlag("master", rootCmd.PersistentFlags().Lookup("master"))
