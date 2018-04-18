@@ -121,9 +121,6 @@ func (lc *LabelController) run() error {
 				lc.logger.Infof("merge error: %v", err)
 			}
 
-			//lc.logger.Infof("dest: %v", dst)
-			//lc.logger.Infof("node: %v", node)
-
 			if reflect.DeepEqual(dst, node) {
 				lc.logger.Infof("Node unchanged")
 				return nil

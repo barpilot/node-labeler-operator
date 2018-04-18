@@ -9,3 +9,10 @@ type Config struct {
 	// ResyncPeriod is the resync period of the operator.
 	ResyncPeriod time.Duration
 }
+
+// NewOperatorConfig converts the command line flag arguments to operator configuration.
+func NewOperatorConfig(t time.Duration) Config {
+	return Config{
+		ResyncPeriod: t,
+	}
+}
