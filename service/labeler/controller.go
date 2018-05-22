@@ -117,7 +117,7 @@ func (lc *LabelController) run() error {
 				lc.logger.Infof("merge error: %v", err)
 			}
 
-			if err := mergo.Merge(&dst.Spec, lc.l.Spec.Merge.NodeSpec, mergo.WithAppendSlice); err != nil {
+			if err := mergo.Merge(&dst.Spec, lc.l.Spec.Merge.NodeSpec, mergo.WithOverride); err != nil {
 				lc.logger.Infof("merge error: %v", err)
 			}
 
