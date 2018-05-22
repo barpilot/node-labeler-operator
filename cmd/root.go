@@ -15,6 +15,7 @@
 package cmd
 
 import (
+	"flag"
 	"fmt"
 	"os"
 	"os/signal"
@@ -24,6 +25,7 @@ import (
 	"k8s.io/client-go/util/homedir"
 
 	"github.com/spf13/cobra"
+	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 
 	applogger "github.com/spotahome/kooper/log"
@@ -57,6 +59,11 @@ func Execute() {
 
 func init() {
 	cobra.OnInitialize(initConfig)
+
+	pflag.CommandLine.AddGoFlagSet(flag.CommandLine)
+
+	// For https://github.com/kubernetes/kubernetes/issues/17162#issuecomment-225596212
+	flag.CommandLine.Parse([]string{})
 
 	// Here you will define your flags and configuration settings.
 	// Cobra supports persistent flags, which, if defined here,
