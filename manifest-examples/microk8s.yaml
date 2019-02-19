@@ -7,21 +7,14 @@ metadata:
 spec:
   nodeSelectorTerms:
     - matchExpressions:
-        - key: kubernetes.io/hostname
-          operator: In
-          values:
-            - minikube
         - key: beta.kubernetes.io/os
           operator: In
           values:
             - linux
-    - matchExpressions:
-        - key: another-node-label-key
-          operator: Exists
   merge:
     metadata:
       labels:
-        minikube: "true"
+        microk8s: "true"
       annotations:
         node-labeler-operator: works
     spec:
