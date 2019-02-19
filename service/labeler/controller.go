@@ -141,10 +141,10 @@ func (lc *LabelController) run() error {
 
 			if reflect.DeepEqual(dst, dstupd) {
 				lc.logger.Infof("Node unchanged")
-				return nil
+			} else {
+				lc.logger.Infof("Node updated")
 			}
 
-			lc.logger.Infof("Node updated")
 			return nil
 		},
 		DeleteFunc: func(s string) error {
