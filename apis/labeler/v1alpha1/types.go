@@ -37,14 +37,6 @@ type LabelerSpec struct {
 	DryRun bool `json:"dryRun,omitempty"`
 }
 
-// type MergeSpec struct {
-// 	metav1.ObjectMeta `json:",inline" protobuf:"bytes,1,opt,name=metadata"`
-
-// 	Spec v1.NodeSpec `json:",inline" protobuf:"bytes,2,opt,name=spec"`
-
-// 	Status v1.NodeStatus `json:",inline" protobuf:"bytes,2,opt,name=status`
-// }
-
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
 // LabelerList is a list of Labeler resources
