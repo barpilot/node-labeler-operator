@@ -121,18 +121,22 @@ func (lc *LabelController) run() error {
 				lc.logger.Infof("merge error: %v", err)
 			}
 
-			// if err := mergo.Merge(&dst.Status, lc.l.Spec.Merge.Status, mergo.WithOverride); err != nil {
-			// 	lc.logger.Infof("merge error: %v", err)
-			// }
+			if err := mergo.Merge(&dst.Status, lc.l.Spec.Merge.Status, mergo.WithOverride); err != nil {
+				lc.logger.Infof("merge error: %v", err)
+			}
 
 			if reflect.DeepEqual(dst, node) {
 				lc.logger.Infof("Node unchanged")
 				return nil
 			}
 
-			dstupd, err := lc.k8sCli.CoreV1().Nodes().Update(dst)
+			_, err := lc.k8sCli.CoreV1().Nodes().Update(dst)
 			if err != nil {
 				lc.logger.Infof("Error updating node meta and spec")
+			}
+			dstupd, err := lc.k8sCli.CoreV1().Nodes().UpdateStatus(dst)
+			if err != nil {
+				lc.logger.Infof("Error updating node status")
 			}
 
 			if reflect.DeepEqual(dst, dstupd) {
