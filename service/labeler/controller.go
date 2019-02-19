@@ -121,6 +121,10 @@ func (lc *LabelController) run() error {
 				lc.logger.Infof("merge error: %v", err)
 			}
 
+			if err := mergo.Merge(&dst.Status, lc.l.Spec.Merge.NodeStatus, mergo.WithOverride); err != nil {
+				lc.logger.Infof("merge error: %v", err)
+			}
+
 			if reflect.DeepEqual(dst, node) {
 				lc.logger.Infof("Node unchanged")
 				return nil
