@@ -117,21 +117,31 @@ func (lc *LabelController) run() error {
 				lc.logger.Infof("merge error: %v", err)
 			}
 
-			if err := mergo.Merge(&dst.Spec, lc.l.Spec.Merge.NodeSpec, mergo.WithOverride); err != nil {
+			if err := mergo.Merge(&dst.Spec, lc.l.Spec.Merge.Spec, mergo.WithOverride); err != nil {
 				lc.logger.Infof("merge error: %v", err)
 			}
 
-			if err := mergo.Merge(&dst.Status, lc.l.Spec.Merge.NodeStatus, mergo.WithOverride); err != nil {
-				lc.logger.Infof("merge error: %v", err)
-			}
+			// if err := mergo.Merge(&dst.Status, lc.l.Spec.Merge.Status, mergo.WithOverride); err != nil {
+			// 	lc.logger.Infof("merge error: %v", err)
+			// }
 
 			if reflect.DeepEqual(dst, node) {
 				lc.logger.Infof("Node unchanged")
 				return nil
 			}
-			_, err := lc.k8sCli.CoreV1().Nodes().Update(dst)
+
+			dstupd, err := lc.k8sCli.CoreV1().Nodes().Update(dst)
+			if err != nil {
+				lc.logger.Infof("Error updating node meta and spec")
+			}
+
+			if reflect.DeepEqual(dst, dstupd) {
+				lc.logger.Infof("Node unchanged")
+				return nil
+			}
+
 			lc.logger.Infof("Node updated")
-			return err
+			return nil
 		},
 		DeleteFunc: func(s string) error {
 			// log.Infof("Node deleted: %s", s)
