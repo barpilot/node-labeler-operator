@@ -47,14 +47,20 @@ spec:
     - key: another-node-label-key
       operator: Exists
   merge:
-    labels:
-      minikube: "true"
-    annotations:
-      node-labeler-operator: works
-    taints:
-    - key: dedicated
-      value: foo
-      effect: PreferNoSchedule
+    metadata:
+      labels:
+        mylabel: "true"
+      annotations:
+        node-labeler-operator: works
+    spec:
+      taints:
+        - key: dedicated
+          value: foo
+          effect: PreferNoSchedule
+    status:
+      capacity:
+        example.com/dongle: "4"
+        example.com/token: "1"
 ```
 for more information about `nodeSelectorTerms` have a look at: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
 
@@ -69,5 +75,6 @@ Nodes are removed on shutdown and so lose theirs attributes.
   - [x] Labels
   - [x] Annotations
   - [x] Taints
+  - [x] Status
 - [ ] Removing attributes
 - [ ] Overwrite attributes
