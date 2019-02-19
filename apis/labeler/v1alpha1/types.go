@@ -1,7 +1,7 @@
 package v1alpha1
 
 import (
-	"k8s.io/api/core/v1"
+	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -31,16 +31,10 @@ type LabelerSpec struct {
 	// Size is how many nodes to label.
 	//Size int `json:"Size,omitempty"`
 	// TerminationPercent is the percent of pods that will be killed randomly.
-	Merge MergeSpec `json:"merge,omitempty"`
+	Merge v1.Node `json:"merge,omitempty"`
 	// DryRun will set the killing in dryrun mode or not.
 	// +optional
 	DryRun bool `json:"dryRun,omitempty"`
-}
-
-type MergeSpec struct {
-	metav1.ObjectMeta `json:",inline" protobuf:"bytes,1,opt,name=metadata"`
-
-	v1.NodeSpec `json:",inline" protobuf:"bytes,2,opt,name=spec"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
