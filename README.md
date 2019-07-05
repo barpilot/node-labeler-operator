@@ -71,3 +71,5 @@ Nodes are removed on shutdown and so lose theirs attributes.
   - [x] Taints
 - [ ] Removing attributes
 - [ ] Overwrite attributes
+- [ ] Manage a specific number of labelled/annotated/tainted nodes
+- [ ] Expose Prometheus endpoint
