@@ -1,0 +1,42 @@
+name: CI
+on:
+  push:
+    branches: [master]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  go:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        go: [1.26.8, 1.27.1]
+    env:
+      GOTOOLCHAIN: local
+      GOMAXPROCS: '2'
+      GOFLAGS: -p=2
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-go@v7.0.0
+        with:
+          go-version: ${{ matrix.go }}
+      - run: go mod verify
+      - run: go test -race ./...
+      - run: go vet ./...
+      - run: make build
+      - name: Validate Kubernetes manifests
+        run: go run github.com/yannh/kubeconform/cmd/kubeconform@v0.8.0 -strict -kubernetes-version 1.37.0 -summary deploy/rbac.yaml deploy/deployment.yaml
+      - name: Verify generated clients and deep copies
+        run: |
+          make generate
+          git diff --exit-code -- apis client
+      - name: Check module reproducibility
+        run: |
+          go mod tidy
+          git diff --exit-code -- go.mod go.sum
+  image:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - run: docker build --tag node-labeler-operator:test .
+      - run: docker run --rm --network none --read-only node-labeler-operator:test --help

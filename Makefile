@@ -1,14 +1,14 @@
+GO ?= go
+MODULE := github.com/barpilot/node-labeler-operator
 
-CODE_GENERATOR_IMAGE := quay.io/slok/kube-code-generator:v1.9.1
-DIRECTORY := $(PWD)
-CODE_GENERATOR_PACKAGE := github.com/barpilot/node-labeler-operator
+.PHONY: build test generate
+build:
+	CGO_ENABLED=0 $(GO) build -trimpath -o bin/node-labeler-operator .
 
+test:
+	$(GO) test -race ./...
+
+# Generators are pinned in go.mod; no Docker or GOPATH checkout is needed.
 generate:
-	docker run --rm -it \
-	-v $(DIRECTORY):/go/src/$(CODE_GENERATOR_PACKAGE) \
-	-e PROJECT_PACKAGE=$(CODE_GENERATOR_PACKAGE) \
-	-e CLIENT_GENERATOR_OUT=$(CODE_GENERATOR_PACKAGE)/client/k8s \
-	-e APIS_ROOT=$(CODE_GENERATOR_PACKAGE)/apis \
-	-e GROUPS_VERSION="labeler:v1alpha1" \
-	-e GENERATION_TARGETS="deepcopy,client" \
-	$(CODE_GENERATOR_IMAGE)
+	$(GO) tool deepcopy-gen --output-file zz_generated.deepcopy.go ./apis/labeler/v1alpha1
+	$(GO) tool client-gen --clientset-name versioned --input-base $(MODULE)/apis --input labeler/v1alpha1 --output-dir ./client/k8s/clientset --output-pkg $(MODULE)/client/k8s/clientset
