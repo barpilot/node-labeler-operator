@@ -1,7 +1,6 @@
 package v1alpha1
 
 import (
-	apiextensionsv1beta1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1beta1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -13,12 +12,12 @@ const (
 	version = "v1alpha1"
 )
 
-// PodTerminator constants
+// Labeler constants
 const (
 	LabelerKind       = "Labeler"
 	LabelerName       = "labeler"
 	LabelerNamePlural = "labelers"
-	LabelerScope      = apiextensionsv1beta1.ClusterScoped
+	LabelerScope      = "Cluster"
 )
 
 // SchemeGroupVersion is group version used to register these objects

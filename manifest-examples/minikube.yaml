@@ -5,13 +5,14 @@ metadata:
   labels:
     operator: node-labeler-operator
 spec:
+  dryRun: true
   nodeSelectorTerms:
   - matchExpressions:
     - key: kubernetes.io/hostname
       operator: In
       values:
       - minikube
-    - key: beta.kubernetes.io/os
+    - key: kubernetes.io/os
       operator: In
       values:
       - linux

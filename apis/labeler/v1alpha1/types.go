@@ -9,7 +9,7 @@ import (
 // +genclient:nonNamespaced
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// PodTerminator represents a pod terminator.
+// Labeler configures node attribute merging.
 type Labeler struct {
 	metav1.TypeMeta `json:",inline"`
 	// Standard object's metadata.
@@ -17,7 +17,7 @@ type Labeler struct {
 	// +optional
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	// Specification of the ddesired behaviour of the pod terminator.
+	// Specification of the desired node attributes.
 	// More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#spec-and-status
 	// +optional
 	Spec LabelerSpec `json:"spec,omitempty"`
@@ -28,11 +28,9 @@ type LabelerSpec struct {
 	// Selector is how the target will be selected.
 	v1.NodeSelector `json:",inline"`
 
-	// Size is how many nodes to label.
-	//Size int `json:"Size,omitempty"`
-	// TerminationPercent is the percent of pods that will be killed randomly.
+	// Merge contains the flattened node metadata and spec fields to merge.
 	Merge MergeSpec `json:"merge,omitempty"`
-	// DryRun will set the killing in dryrun mode or not.
+	// DryRun logs matching changes without writing to nodes.
 	// +optional
 	DryRun bool `json:"dryRun,omitempty"`
 }
